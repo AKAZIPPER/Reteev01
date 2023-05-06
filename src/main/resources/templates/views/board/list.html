@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html :: fragment-header">
+<title>게시판</title>
+</head>
+<body>
+	<div class="container-fluid mb-5">
+		<div th:replace="/fragments/logoMain.html :: fragment-logoMain"></div>
+		<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+		<div class="row m-5">		
+			<h1 style="text-align:center;">게시판</h1>
+			<h3>총 건수 : <span id="dataNum" th:text="${#lists.size(lists)}">없음</span></h3>
+			<table class="table table-sm table-striped table-hover">
+				<tr class="table-dark" align="center">
+					<th class="col-1">No</th>
+					<th class="col-7">제목</th>
+					<th class="col-2">작성자</th>
+					<th class="col-2">조회수</th>
+				</tr>
+				<tr th:each="list : ${lists}">
+					<td th:text=${list.id} align="center"></td>
+					<td th:text=${list.title}>제목</td>
+					<td th:text=${list.writer}>작성자</td>
+					<td align="center">100</td>
+				</tr>
+			</table>
+			<button type="button" class="btn btn-dark" th:onclick="|location.href='@{/board/write}'|">글쓰기</button>
+		</div>
+	</div>
+	<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+	
+	<script th:inline="javascript">
+// 		var lists = [[${lists}]].length;		
+// 		$("#dataNum").text(lists);
+	</script>
+</body>
+</html>

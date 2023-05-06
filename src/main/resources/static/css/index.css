@@ -1,0 +1,14 @@
+@charset "UTF-8";
+
+.logoArea {text-align:center;}
+#logoImg {width:100px; height:100px;}
+#logoName {line-height:100px; height:100px; font-size:50px; margin:20px;}
+
+.navs {text-align:center; padding:20px; font-size:17px;}
+nav{
+	color:white;
+	font-size:50px;
+}
+nav div:hover {
+	background-color: lightgrey;
+}

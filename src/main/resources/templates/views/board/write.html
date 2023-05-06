@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html :: fragment-header">
+<meta charset="UTF-8">
+<title>게시판 글쓰기</title>
+</head>
+<body>
+	<div class="container mb-5" role="main">
+		<div th:replace="/fragments/logoMain.html :: fragment-logoMain"></div>
+		<hr/>
+		<h1 align=center>글쓰기</h1>
+		<form name="form" id="form" role="form" method="post" action="/board/insert">
+			<div class="mb-3">
+				<label for="title">제목</label>
+				<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+			</div>
+			<div class="mb-3">
+				<label for="reg_id">작성자</label>
+				<input type="text" class="form-control" name="writer" id="writer" placeholder="이름을 입력해 주세요">
+			</div>			
+
+			<div class="mb-3">
+				<label for="content">내용</label>
+				<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" ></textarea>
+			</div>	
+			<div>
+				<button type="button" class="btn btn-sm btn-dark" id="btnSave">저장</button>
+				<button type="button" class="btn btn-sm btn-secondary" id="btnUpdate" th:onclick="|location.href='@{/board/modify}'|">수정</button>
+				<button type="button" class="btn btn-sm btn-dark" id="btnList" th:onclick="|location.href='@{/board/list}'|">목록</button>
+			</div>
+		</form>
+	</div>		
+	<div th:replace="/fragments/footer.html :: fragment-footer"></div>
+	
+	<script>
+	
+		var title = null;
+		var writer = null;
+		var content = null;
+		
+		$("#btnSave").on("click", function(){
+
+			
+			title = $("#title").val();
+			writer = $("#writer").val();
+			content = $("#content").val();
+			console.log(title + " | " + writer + " | " + content);
+			
+			if(title==null || title==""){
+				alert("제목을 입력해주세요");
+			}else if(writer==null || writer==""){
+				alert("작성자를 입력해주세요");
+			}else if(content==null || content==""){
+				alert("내용을 입력해주세요");
+			}else{
+				$("#form").submit();
+			}				
+		});
+	</script>
+</body>
+</html>

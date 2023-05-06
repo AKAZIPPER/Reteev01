@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+	<form th:fragment="fragment-nav" id="navForm">	
+		<nav class="row bg-dark">				
+			<div class="navs col md-6" onclick="pageMove('home')">
+				HOME
+			</div>
+			<div class="navs col md-6" onclick="pageMove('introduce')">
+				팀소개
+			</div>
+			<div class="navs col md-6" onclick="pageMove('profile')">
+				멤버프로필
+			</div>
+			<div class="navs col md-6" onclick="pageMove('board')">
+				게시판
+			</div>
+		</nav>
+	</form>	
+	<script>
+
+	</script>
+</body>
+</html>
