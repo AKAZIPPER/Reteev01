@@ -1,14 +1,50 @@
 <!DOCTYPE html>
-<html>
-<head>
-<meta charset="UTF-8">
-<title>Insert title here</title>
-<script src="http://code.jquery.com/jquery-3.5.1.min.js"></script>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html :: fragment-header">
+	<title>리티브</title>
 </head>
 <body>
-	<form action="/home">	
-		<button id="homeButton">홈 화면 이동하기</button>
-	</form>
-	
+	<!-- 	<div th:replace="/fragments/content.html :: fragment-contents"></div> -->
+	<div class="container-fluid">		
+		<div th:replace="/fragments/logoMain.html :: fragment-logoMain"></div>
+		<div th:replace="/fragments/nav.html :: fragment-nav"></div>
+		<div class="row ml-0">
+			<div id="carouselExample" class="carousel slide">
+				<div class="carousel-inner">
+					<div class="carousel-item active">
+						<img src="https://placeimg.com/1000/500/arch"
+							class="d-block w-100" alt="">
+					</div>
+					<div class="carousel-item">
+						<img src="https://placeimg.com/1000/500/animals"
+							class="d-block w-100" alt="동물">
+					</div>
+					<div class="carousel-item">
+						<img src="https://placeimg.com/1000/500/people"
+							class="d-block w-100" alt="사람">
+					</div>
+					<div class="carousel-item">
+						<img src="https://placeimg.com/1000/500/nature"
+							class="d-block w-100" alt="자연">
+					</div>
+					<div class="carousel-item">
+						<img src="https://placeimg.com/1000/500/tech"
+							class="d-block w-100" alt="테크">
+					</div>
+				</div>
+				<button class="carousel-control-prev" type="button"
+					data-bs-target="#carouselExample" data-bs-slide="prev">
+					<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Previous</span>
+				</button>
+				<button class="carousel-control-next" type="button"
+					data-bs-target="#carouselExample" data-bs-slide="next">
+					<span class="carousel-control-next-icon" aria-hidden="true"></span>
+					<span class="visually-hidden">Next</span>
+				</button>
+			</div>
+		</div>
+	</div>
+	<div th:replace="/fragments/footer.html :: fragment-footer"></div>
 </body>
 </html>

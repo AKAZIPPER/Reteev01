@@ -11,8 +11,13 @@ public class HomeController {
 		return "index";
 	}
 
-	@GetMapping("/home")
-	public String Home() {
-		return "home";
+	@GetMapping("/introduce")
+	public String introduce() {
+		return "/views/reteev_introduce";
+	}
+
+	@GetMapping("/profile")
+	public String profile() {
+		return "/views/reteev_member";
 	}
 }
