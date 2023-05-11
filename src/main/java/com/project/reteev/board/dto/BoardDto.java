@@ -1,10 +1,10 @@
-package com.project.reteev.board.vo;
+package com.project.reteev.board.dto;
 
 import lombok.Data;
 
 
 @Data
-public class BoardVo {
+public class BoardDto {
 	private int id;	
 	private String title;
 	private String content;

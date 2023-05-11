@@ -15,4 +15,4 @@ function pageMove(e) {
 	}else{
 		alert('값 없음');
 	}
-}	
+};

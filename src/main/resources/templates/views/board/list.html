@@ -19,19 +19,24 @@
 				</tr>
 				<tr th:each="list : ${lists}">
 					<td th:text=${list.id} align="center"></td>
-					<td th:text=${list.title}>제목</td>
-					<td th:text=${list.writer}>작성자</td>
-					<td align="center">100</td>
+					<td><a th:text=${list.title} th:href="@{/board/write(id=${list.id})}">제목</a></td>
+					<td th:text=${list.writer}><a href=""></a>작성자</td>
+					<td align="center"><a href=""></a>100</td>
 				</tr>
 			</table>
-			<button type="button" class="btn btn-dark" th:onclick="|location.href='@{/board/write}'|">글쓰기</button>
+			<button id="write" type="button" class="btn btn-dark" th:onclick="|location.href='@{/board/write(paramData='true')}'|">글쓰기</button>
 		</div>
 	</div>
 	<div th:replace="/fragments/footer.html :: fragment-footer"></div>
 	
 	<script th:inline="javascript">
-// 		var lists = [[${lists}]].length;		
-// 		$("#dataNum").text(lists);
+
+		$(document).ready(function(){
+			var message = [[${message}]];
+			if(message == "삭제완료"){
+				alert("삭제가 완료되었습니다.");	
+			}
+		});
 	</script>
 </body>
 </html>

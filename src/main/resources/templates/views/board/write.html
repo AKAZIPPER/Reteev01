@@ -9,42 +9,68 @@
 		<div th:replace="/fragments/logoMain.html :: fragment-logoMain"></div>
 		<hr/>
 		<h1 align=center>글쓰기</h1>
-		<form name="form" id="form" role="form" method="post" action="/board/insert">
+		<form name="form" id="form" role="form" method="post" th:object="${board}" action="/board/insert">
 			<div class="mb-3">
 				<label for="title">제목</label>
-				<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요">
+				<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요" th:field=*{title} readonly>
 			</div>
 			<div class="mb-3">
-				<label for="reg_id">작성자</label>
-				<input type="text" class="form-control" name="writer" id="writer" placeholder="이름을 입력해 주세요">
+				<label for="writer">작성자</label>
+				<input type="text" class="form-control" name="writer" id="writer" placeholder="작성자를 입력해 주세요" th:field=*{writer} readonly>
 			</div>			
 
 			<div class="mb-3">
 				<label for="content">내용</label>
-				<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" ></textarea>
+				<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" th:field=*{content} readonly></textarea>
 			</div>	
 			<div>
-				<button type="button" class="btn btn-sm btn-dark" id="btnSave">저장</button>
-				<button type="button" class="btn btn-sm btn-secondary" id="btnUpdate" th:onclick="|location.href='@{/board/modify}'|">수정</button>
-				<button type="button" class="btn btn-sm btn-dark" id="btnList" th:onclick="|location.href='@{/board/list}'|">목록</button>
+				<button type="button" class="btn btn-sm btn-dark" id="saveBtn">저장</button>
+				<button type="button" class="btn btn-sm btn-dark" id="modifyGo">수정</button>
+				<button type="button" class="btn btn-sm btn-secondary" id="modifyBtn">수정완료</button>
+				<button type="button" class="btn btn-sm btn-secondary" id="listBtn" th:onclick="|location.href='@{/board/list}'|">목록</button>
+				<button type="button" class="btn btn-sm btn-danger" id="deleteBtn" th:onclick="|location.href='@{/board/delete(id=${board.id})}'|">삭제</button>
 			</div>
 		</form>
 	</div>		
 	<div th:replace="/fragments/footer.html :: fragment-footer"></div>
 	
-	<script>
+	<script th:inline="javascript">		
 	
+		$(document).ready(function(){
+			readonlyCheck();
+			writeBtn();
+		});
+		
+		//글쓰기 버튼 클릭시 readonly 적용
+		var readonly = [[${param.paramData}]]	
+		function readonlyCheck(){
+			if(readonly){
+				rFalse();
+			}
+		}
+		
+		// readonly 적용
+		function rTrue(){
+			$("#title").attr("readonly",true);
+			$("#writer").attr("readonly",true);
+			$("#content").attr("readonly",true);
+		}
+		// readonly 해제
+		function rFalse(){
+			$("#title").attr("readonly",false);
+			$("#writer").attr("readonly",false);
+			$("#content").attr("readonly",false);
+		}
+	
+		
 		var title = null;
 		var writer = null;
 		var content = null;
-		
-		$("#btnSave").on("click", function(){
-
+		$("#saveBtn").on("click", function(){
 			
 			title = $("#title").val();
 			writer = $("#writer").val();
 			content = $("#content").val();
-			console.log(title + " | " + writer + " | " + content);
 			
 			if(title==null || title==""){
 				alert("제목을 입력해주세요");
@@ -53,8 +79,89 @@
 			}else if(content==null || content==""){
 				alert("내용을 입력해주세요");
 			}else{
+				alert("저장되었습니다.")
 				$("#form").submit();
 			}				
+		});
+		
+		
+		// 해당게시글 or 글쓰기 에 따라 보여지는 버튼 다름 
+		var board = [[${board}]];
+		function writeBtn(){
+			if(!(board.id==0 || board.id==null)){
+				$("#saveBtn").hide();
+				$("#modifyGo").show();
+				$("#modifyBtn").hide();
+				$("#deleteBtn").show();
+			}else{
+				$("#saveBtn").show();
+				$("#modifyGo").hide();
+				$("#modifyBtn").hide();
+				$("#deleteBtn").hide();
+			}
+		}
+		
+		// 수정버튼
+		$("#modifyGo").on("click",function(){
+			
+			$("#modifyGo").hide();
+			$("#modifyBtn").show();
+			$("#deleteBtn").show();
+			rFalse();
+		});
+		
+		// 수정완료버튼
+		$("#modifyBtn").on("click",function(){
+			var title = $("#title").val();
+			var writer = $("#writer").val();
+			var content = $("#content").val();
+			if( board.title == title && board.writer == writer && board.content == content){
+				alert("내용을 변경해주세요.");
+				return false;
+			}else if (title == "" || writer === "" || content == ""){
+				alert("빈 내용이 있습니다.");
+				return false;
+			}
+			else{
+				$.ajax({
+					type: 'post',
+					url: '/board/modify',
+// 					headers : {
+// 						'Content-Type' : 'application/json',
+// 						'X-HTTP-Method-Override' : 'post'
+// 					},
+					data : {
+						"id" : board.id,
+						title,
+						writer,
+						content
+					},
+					success : function(result) {
+						rTrue();
+						$("#modifyGo").show();
+						$("#modifyBtn").hide();
+						alert("수정되었습니다.");
+						
+					},
+					error : function(request, status, error) {
+						console.log(error);
+					}
+					
+				})
+			}
+		});
+		
+		$("#deleteBtn").on("click", function(){			
+// 			$.ajax({
+// 				type: 'post',
+// 				url: '/board/delete',
+// 				data: {"id" : board.id},
+// 				success: function(result) {
+// 				},
+// 				error: function(error){
+// 					console.error(error);
+// 				}
+// 			})
 		});
 	</script>
 </body>
