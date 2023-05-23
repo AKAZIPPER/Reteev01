@@ -18,6 +18,6 @@ public class HomeController {
 
 	@GetMapping("/profile")
 	public String profile() {
-		return "/views/reteev_member";
+		return "/views/reteev_profile";
 	}
 }

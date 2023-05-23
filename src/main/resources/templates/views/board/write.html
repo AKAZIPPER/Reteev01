@@ -9,7 +9,7 @@
 		<div th:replace="/fragments/logoMain.html :: fragment-logoMain"></div>
 		<hr/>
 		<h1 align=center>글쓰기</h1>
-		<form name="form" id="form" role="form" method="post" th:object="${board}" action="/board/insert">
+		<form name="form" id="form" role="form" method="post" th:object="${board}" action="/board/mybatis/insert">
 			<div class="mb-3">
 				<label for="title">제목</label>
 				<input type="text" class="form-control" name="title" id="title" placeholder="제목을 입력해 주세요" th:field=*{title} readonly>
@@ -27,8 +27,8 @@
 				<button type="button" class="btn btn-sm btn-dark" id="saveBtn">저장</button>
 				<button type="button" class="btn btn-sm btn-dark" id="modifyGo">수정</button>
 				<button type="button" class="btn btn-sm btn-secondary" id="modifyBtn">수정완료</button>
-				<button type="button" class="btn btn-sm btn-secondary" id="listBtn" th:onclick="|location.href='@{/board/list}'|">목록</button>
-				<button type="button" class="btn btn-sm btn-danger" id="deleteBtn" th:onclick="|location.href='@{/board/delete(id=${board.id})}'|">삭제</button>
+				<button type="button" class="btn btn-sm btn-secondary" id="listBtn" th:onclick="|location.href='@{/board/mybatis/list}'|">목록</button>
+				<button type="button" class="btn btn-sm btn-danger" id="deleteBtn" th:onclick="|location.href='@{/board/mybatis/delete(id=${board.id})}'|">삭제</button>
 			</div>
 		</form>
 	</div>		
@@ -125,7 +125,7 @@
 			else{
 				$.ajax({
 					type: 'post',
-					url: '/board/modify',
+					url: '/board/mybatis/modify',
 // 					headers : {
 // 						'Content-Type' : 'application/json',
 // 						'X-HTTP-Method-Override' : 'post'
@@ -136,12 +136,12 @@
 						writer,
 						content
 					},
-					success : function(result) {
+					success : function(result) {						
 						rTrue();
 						$("#modifyGo").show();
 						$("#modifyBtn").hide();
-						alert("수정되었습니다.");
-						
+						alert("result : ", result)
+						alert("수정되었습니다.");						
 					},
 					error : function(request, status, error) {
 						console.log(error);
@@ -150,19 +150,7 @@
 				})
 			}
 		});
-		
-		$("#deleteBtn").on("click", function(){			
-// 			$.ajax({
-// 				type: 'post',
-// 				url: '/board/delete',
-// 				data: {"id" : board.id},
-// 				success: function(result) {
-// 				},
-// 				error: function(error){
-// 					console.error(error);
-// 				}
-// 			})
-		});
+
 	</script>
 </body>
 </html>

@@ -1,4 +1,4 @@
-package com.project.reteev.board.entity;
+package com.project.reteev.model;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Entity(name = "board")
 @AllArgsConstructor
 @NoArgsConstructor
-public class BoardEntity {
+public class Board {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)

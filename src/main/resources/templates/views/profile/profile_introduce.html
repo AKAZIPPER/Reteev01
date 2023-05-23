@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>멤버 상세 페이지</title>
+</head>
+<body>
+    <div class="row mx-5" th:fragment="profile-introduce">
+    	<h2 align=center> SKILL INVENTORY </h2>
+    	<table class="table table-bordered">
+		  <thead>
+		    <tr>
+		      <th scope="col" rowspan="2" class="align-middle text-center">프로젝트 명 <br/> (업무명) </th>
+		      <th scope="col" rowspan="2" class="align-middle text-center">참여기간</th>
+		      <th scope="col" rowspan="2" class="align-middle text-center">고객사</th>
+		      <th scope="col" rowspan="2" class="align-middle text-center">역할</th>
+		      <th scope="col" colspan="5" class="align-middle text-center">개발환경</th>
+		    </tr>
+		    <tr>
+		    	<th scope="col" class="text-center">OS</th>
+		    	<th scope="col" class="text-center">언어</th>
+		    	<th scope="col" class="text-center">DBMS</th>
+		    	<th scope="col" class="text-center">F.W</th>
+		    	<th scope="col" class="text-center">기타</th>
+		    </tr>
+		  </thead>
+		  <tbody>
+		    <tr>
+		      <th scope="row">KB 국민은행<br/>(빅데이터카페 운영)</th>
+		      <td>2022.10 ~ 2023.04</td>
+		      <td>KB</td>
+		      <td>SI / SM</td>
+		      <td>Linux</td>
+		      <td>JAVA,JS</td>
+		      <td>db2, sysbass, postSQL</td>
+		      <td>SPRING</td>
+		      <td>websphere, websquare5, Mybatis</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">프로젝트 상세설명</th>
+		      <td colspan="8">
+		      	* 빅데이터카페 > 부서시각화 화면 lazyloading관련 이슈처리, 시각화데이터 별 포틀렛 JS처리 <br/>
+		      	* 빅데이터카페 > 통합문서관리 화면 > 트리구조로 된 메뉴바 데이터 에러처리<br/>
+		      	* 태블로 API 에러처리
+		      </td>
+		    </tr>
+		    <tr>
+		      <th scope="row">신한라이프<br/>(AI 플랫폼 사업)</th>
+		      <td>2022.02 ~ 2022.09</td>
+		      <td>신한라이프</td>
+		      <td>개발</td>
+		      <td>Linux</td>
+		      <td>JAVA,JS</td>
+		      <td>MySQL</td>
+		      <td>SPRING</td>
+		      <td>JSP, JQUERY, MYBATIS</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">프로젝트 상세설명</th>
+		      <td colspan="8">
+		      	* 솔루션 시스템 통합관리 (시스템조회, 암복호화) 화면 개발, 및 기능구현<br/>
+		      	* 시스템조회 화면 검색조건 데이터 공톨쿼리 에러부분 데이터처리
+		      </td>
+		    </tr>
+		    <tr>
+		      <th scope="row">롯데 ITOO<br/>(Community 관리자 API, 화면 개발)</th>
+		      <td>2021.01 ~ 2022.01</td>
+		      <td>롯데 쇼핑몰</td>
+		      <td>개발</td>
+		      <td>Linux</td>
+		      <td>JAVA,JS</td>
+		      <td>RDS(MYSQL)</td>
+		      <td>SPRING BOOT, VUE.JS</td>
+		      <td>AWS,JPA</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">프로젝트 상세설명</th>
+		      <td colspan="8">
+		      	* 롯데 쇼핑몰 ITOO 웹 관리자 페이지 추가기능 개발<br/>
+		      	* MSA 방식으로 기본 CRUD 참여	
+		      </td>
+		    </tr>
+		    <tr>
+		      <th scope="row">KT DS<br/>(Flying Cube 화면 고도화)</th>
+		      <td>2020.04 ~ 2020.12</td>
+		      <td>KT-DS</td>
+		      <td>개발</td>
+		      <td>Linux</td>
+		      <td>JAVA,JS</td>
+		      <td>MYSQL</td>
+		      <td>SPRING BOOT, VUE.JS</td>
+		      <td>AWS, JPA</td>
+		    </tr>
+		    <tr>
+		      <th scope="row">프로젝트 상세설명</th>
+		      <td colspan="8">AS-IS 화면 VUE.JS로 고도화 진행, 메인 대시보드 작업 참여</td>
+		    </tr>
+
+		  </tbody>
+		</table>
+    </div>
+</body>
+</html>

@@ -11,7 +11,7 @@ function pageMove(e) {
 		$("#navForm").attr("action","/profile").submit();
 	}else if(e == 'board'){
 		alert('board 실행');
-		$("#navForm").attr("action","/board/list").submit();
+		$("#navForm").attr("action","/board/mybatis/list").submit();
 	}else{
 		alert('값 없음');
 	}

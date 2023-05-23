@@ -9,10 +9,10 @@
 		<div th:replace="/fragments/nav.html :: fragment-nav"></div>
 		<div class="row m-5">		
 			<h1 style="text-align:center;">게시판</h1>
-			<h3>총 건수 : <span id="dataNum" th:text="${lists.totalElements}">없음</span></h3>
-			<form class="form-inline d-flex justify-content-end" method="GET" th:action="@{/board/list}">
+			<h3>총 건수 : <span id="dataNum" th:text="${lists.size}">없음</span></h3>
+			<form class="form-inline d-flex justify-content-end" method="GET" th:action="@{/board/mybatis/list}">
 				<div class="form-group mx-sm-3 mb-2">
-					<input type="text" class="form-control" id="searchText" name="searchText" th:value="${param.searchText}">				
+					<input type="text" class="form-control" id="searchText" name="searchText">				
 				</div>
 				<button type="submit" class="btn btn-secondary mb-2">검색</button>
 			</form>
@@ -32,15 +32,15 @@
 			</table>
 			<nav aria-label="Page navigation example">
 			  <ul class="pagination justify-content-center">
-			    <li class="page-item" th:classappend="${1 == lists.pageable.pageNumber + 1} ? 'disabled'">
-			      <a class="page-link" th:href="@{/board/list(page=${lists.pageable.pageNumber - 1},searchText=${param.searchText})}">이전</a>
+			    <li class="page-item">
+			      <a class="page-link" th:href="@{/board/mybatis/list}">이전</a>
 			    </li>
 				<!-- 반복문 index 값이 현재페이지값이랑 일치하면 부트스트랩 disabled 클래스 이름을 추가 -->
-			    <li class="page-item" th:classappend="${i == lists.pageable.pageNumber + 1} ? 'disabled'" th:each="i : ${#numbers.sequence(startPage, endPage)}">
-			    	<a class="page-link" th:href="@{/board/list(page=${i - 1},searchText=${param.searchText})}" th:text="${i}">1</a>
+			    <li class="page-item">
+			    	<a class="page-link" th:href="@{/board/list}">1</a>
 			    </li>
-			    <li class="page-item" th:classappend="${lists.totalPages == lists.pageable.pageNumber + 1} ? 'disabled'">
-			      <a class="page-link" th:href="@{/board/list(page=${lists.pageable.pageNumber + 1},searchText=${param.searchText})}">다음</a>
+			    <li class="page-item">
+			      <a class="page-link" th:href="@{/board/mybatis/list}">다음</a>
 			    </li>
 			  </ul>
 			</nav>
