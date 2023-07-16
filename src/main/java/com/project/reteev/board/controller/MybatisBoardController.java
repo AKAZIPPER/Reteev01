@@ -14,6 +14,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.project.reteev.board.service.BoardService;
 import com.project.reteev.model.Board;
+import com.project.reteev.model.PageDTO;
+import com.project.reteev.pagination.service.PaginationService;
 
 @Controller
 @RequestMapping("/board/mybatis")
@@ -21,18 +23,45 @@ public class MybatisBoardController {
 
 	@Autowired
 	private BoardService boardService;
+	@Autowired
+	private PaginationService paginationService;
 	
 	@GetMapping("/list")
-	public String list(Model model) {		
-		List<Board> board = boardService.getBoardList();		
-		model.addAttribute("lists", board);		
+	public String list(Model model,
+					   @RequestParam(value = "page", required = false, defaultValue = "1") int pageNumber,
+					   @RequestParam(required = false) String searchText,
+						@RequestParam(required = false) String paramData) {
+		
+		List<Board> pagingList = paginationService.pagingList(pageNumber, searchText);
+		int countAll = boardService.countAll(searchText);
+		PageDTO pageDTO = paginationService.pagingParam(pageNumber, searchText);
+		System.out.println("pageDTO : " + pageDTO);
+		System.out.println("pageNumber : " + pageNumber);
+		System.out.println("searchText : " + searchText);
+		
+		model.addAttribute("lists", pagingList); //해당 페이지 리스트
+		model.addAttribute("paging", pageDTO); 	 //페이징처리
+		model.addAttribute("countAll", countAll); 	 //페이징처리
+		
+		
+		
+		
+		// 게시판 목록에서 해당페이지로 가는 검색어로 다시 리스트페이지 호출
+		model.addAttribute("searchText", searchText);
+		System.out.println("paramData : " + paramData);
+		System.out.println("MybatisBoardController.list 작동");
+		
 		return "/views/board/list";
 	}
 	
 	@GetMapping("/write")
 	public String write(Model model, @RequestParam(required = false) Long id) {		
-		Board board = boardService.getWriteElementById(id);
-		model.addAttribute("board", board);		
+		if(id==null) {
+			model.addAttribute("board", new Board());
+		}else {
+			Board board = boardService.getWriteElementById(id);
+			model.addAttribute("board", board);		
+		}
 		return "/views/board/write";
 	}
 	

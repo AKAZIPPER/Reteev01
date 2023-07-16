@@ -24,11 +24,12 @@
 				<textarea class="form-control" rows="5" name="content" id="content" placeholder="내용을 입력해 주세요" th:field=*{content} readonly></textarea>
 			</div>	
 			<div>
-				<button type="button" class="btn btn-sm btn-dark" id="saveBtn">저장</button>
+				<!--  아이디 값과 이벤트함수 이름이 같으면 function  이름을 찾기 못한다. -->
+				<button type="button" class="btn btn-sm btn-dark" th:onclick="saveBtn()" th:value="저장">저장</button>
 				<button type="button" class="btn btn-sm btn-dark" id="modifyGo">수정</button>
 				<button type="button" class="btn btn-sm btn-secondary" id="modifyBtn">수정완료</button>
-				<button type="button" class="btn btn-sm btn-secondary" id="listBtn" th:onclick="|location.href='@{/board/mybatis/list}'|">목록</button>
-				<button type="button" class="btn btn-sm btn-danger" id="deleteBtn" th:onclick="|location.href='@{/board/mybatis/delete(id=${board.id})}'|">삭제</button>
+				<button type="button" class="btn btn-sm btn-secondary" th:onclick="listBtn()">목록</button>
+				<button type="button" class="btn btn-sm btn-danger" th:onclick="deleteBtn()">삭제</button>
 			</div>
 		</form>
 	</div>		
@@ -36,6 +37,9 @@
 	
 	<script th:inline="javascript">		
 	
+		// board 안의 데이터 유무에 따라 수정/ 글쓰기 모드 전환
+		var board = [[${board}]];
+		
 		$(document).ready(function(){
 			readonlyCheck();
 			writeBtn();
@@ -47,6 +51,10 @@
 			if(readonly){
 				rFalse();
 			}
+		}
+		
+		function test() {
+			alert("함수실행 정상작동");
 		}
 		
 		// readonly 적용
@@ -63,15 +71,11 @@
 		}
 	
 		
-		var title = null;
-		var writer = null;
-		var content = null;
-		$("#saveBtn").on("click", function(){
-			
-			title = $("#title").val();
-			writer = $("#writer").val();
-			content = $("#content").val();
-			
+		// 저장버튼
+		function saveBtn() {
+			var title = $("#title").val();
+			var writer = $("#writer").val();
+			var content = $("#content").val();			
 			if(title==null || title==""){
 				alert("제목을 입력해주세요");
 			}else if(writer==null || writer==""){
@@ -79,18 +83,34 @@
 			}else if(content==null || content==""){
 				alert("내용을 입력해주세요");
 			}else{
-				alert("저장되었습니다.")
-				$("#form").submit();
-			}				
-		});
-		
+				alert("유효성검사정상.")				
+				// 글쓰기 저장 url
+				var insertUrl = '/board/mybatis/insert';
+				$.ajax({
+					type: 'post',
+					url: insertUrl,
+					data: {
+						title,
+						writer,
+						content
+					},
+					success: function(result){
+						var resultUrl = '/board/mybatis/list';
+						location.replace(resultUrl);
+						alert('저장되었습니다.');
+					},
+					error: function(error){
+						console.log("에러 코드 : " + error);
+					}				
+				});
+			}
+		}
 		
 		// 해당게시글 or 글쓰기 에 따라 보여지는 버튼 다름 
-		var board = [[${board}]];
-		function writeBtn(){
+		function writeBtn() {
 			if(!(board.id==0 || board.id==null)){
-				$("#saveBtn").hide();
 				$("#modifyGo").show();
+				$("#saveBtn").hide();
 				$("#modifyBtn").hide();
 				$("#deleteBtn").show();
 			}else{
@@ -101,9 +121,33 @@
 			}
 		}
 		
+		// 목록버튼
+		function listBtn() {
+			var page = [[${param.page}]];
+			var searchText = [[${searchText}]];
+			var url = "/board/mybatis/list";
+			$.ajax({
+				type: "get",
+				url,
+				data: {
+					"page" : page,
+					"searchText" : searchText
+				},
+				success: function(re){					
+					alert("목록으로 다시 이동합니다.");
+					location.replace(url);
+				},
+				error: function(e){
+					alert("error 발생 : " + Object.entries(e));
+					console.log(e);
+				}
+					
+			})
+		}
+		
 		// 수정버튼
 		$("#modifyGo").on("click",function(){
-			
+			$("#saveBtn").hide();
 			$("#modifyGo").hide();
 			$("#modifyBtn").show();
 			$("#deleteBtn").show();
@@ -123,6 +167,7 @@
 				return false;
 			}
 			else{
+				alert("수정완료 ID : " + board.id);
 				$.ajax({
 					type: 'post',
 					url: '/board/mybatis/modify',
@@ -136,12 +181,14 @@
 						writer,
 						content
 					},
-					success : function(result) {						
+					success : function() {
+						var page = [[${param.page}]];
+						var url = `/board/mybatis/list?page=${page}`;
 						rTrue();
 						$("#modifyGo").show();
 						$("#modifyBtn").hide();
-						alert("result : ", result)
-						alert("수정되었습니다.");						
+						alert("수정되었습니다.");
+						location.replace(url);
 					},
 					error : function(request, status, error) {
 						console.log(error);
@@ -150,6 +197,25 @@
 				})
 			}
 		});
+		
+		// 삭제버튼
+		function deleteBtn() {			
+			var id = board.id;
+			alert("삭제 ID : " + id);			
+			var url = '/board/mybatis/delete';			
+			$.ajax({
+				type: 'get',
+				url: '/board/mybatis/delete',
+				data: {id},
+				success: function() {
+					location.replace(url);
+					alert('삭제가 완료되었습니다.');
+				},
+				error: function(e){
+					console.error("에러 코드: ", e);
+				}				
+			});
+		}
 
 	</script>
 </body>

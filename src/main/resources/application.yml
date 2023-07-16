@@ -3,6 +3,8 @@ spring:
     prefix: classpath:/templates/
     suffix: .html
     
+  mvc:
+    static-path-pattern: "/static/**"
   datasource: 
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/db_reteev_kdh01?serverTimezone=UTC&characterEncoding=UTF-8

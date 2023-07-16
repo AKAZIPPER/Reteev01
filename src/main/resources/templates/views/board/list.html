@@ -9,54 +9,70 @@
 		<div th:replace="/fragments/nav.html :: fragment-nav"></div>
 		<div class="row m-5">		
 			<h1 style="text-align:center;">게시판</h1>
-			<h3>총 건수 : <span id="dataNum" th:text="${lists.size}">없음</span></h3>
+			<div>
+				<h3>총 건수 : <span id="dataNum" th:text="${countAll}">없음</span></h3>
+			</div>
 			<form class="form-inline d-flex justify-content-end" method="GET" th:action="@{/board/mybatis/list}">
 				<div class="form-group mx-sm-3 mb-2">
 					<input type="text" class="form-control" id="searchText" name="searchText">				
 				</div>
 				<button type="submit" class="btn btn-secondary mb-2">검색</button>
+				<button type="button" class="btn btn-dark ms-2 mb-2" th:onclick="getWrite()">글쓰기</button>
 			</form>
 			<table class="table table-sm table-striped table-hover">
 				<tr class="table-primary" align="center">
-					<th class="col-1">No</th>
-					<th class="col-7">제목</th>
+					<th class="col-2">아이디</th>
+					<th class="col-6">제목</th>
 					<th class="col-2">작성자</th>
 					<th class="col-2">조회수</th>
 				</tr>
 				<tr th:each="list : ${lists}">
 					<td th:text=${list.id} align="center"></td>
-					<td><a th:text=${list.title} th:href="@{/board/write(id=${list.id})}">제목</a></td>
+					<td><a th:text=${list.title} th:href="@{/board/write(id=${list.id},page=${paging.page},searchText=${searchText})}">제목</a></td>
 					<td th:text=${list.writer}><a href=""></a>작성자</td>
-					<td align="center"><a href=""></a>100</td>
+					<td align="center">100</td>
 				</tr>
 			</table>
 			<nav aria-label="Page navigation example">
-			  <ul class="pagination justify-content-center">
+			  <ul class="pagination justify-content-center text-dark">
 			    <li class="page-item">
-			      <a class="page-link" th:href="@{/board/mybatis/list}">이전</a>
+			      <a class="page-link" th:classappend="${paging.page<=1} ? 'disabled'" th:href="@{/board/mybatis/list(page=${paging.page-1})}">이전</a>
 			    </li>
 				<!-- 반복문 index 값이 현재페이지값이랑 일치하면 부트스트랩 disabled 클래스 이름을 추가 -->
-			    <li class="page-item">
-			    	<a class="page-link" th:href="@{/board/list}">1</a>
+			    <li class="page-item" th:each="num, i : ${#numbers.sequence(paging.startPage, paging.endPage)}">
+			    	<a th:classappend="${i.current eq paging.page} ? 'disabled text-danger'" class="page-link" th:href="@{/board/mybatis/list(page=${i.current})}" th:text="${i.current}">페이지 없음</a>
 			    </li>
 			    <li class="page-item">
-			      <a class="page-link" th:href="@{/board/mybatis/list}">다음</a>
+			      <a class="page-link" th:classappend="${paging.page >= paging.maxPage} ? 'disabled'" th:href="@{/board/mybatis/list(page=${paging.page+1})}">다음</a>
 			    </li>
 			  </ul>
 			</nav>
-			<button id="write" type="button" class="btn btn-dark" th:onclick="|location.href='@{/board/write(paramData='true')}'|">글쓰기</button>
 		</div>
 	</div>
 	<div th:replace="/fragments/footer.html :: fragment-footer"></div>
 	
 	<script th:inline="javascript">
-
 		$(document).ready(function(){
 			var message = [[${message}]];
 			if(message == "삭제완료"){
 				alert("삭제가 완료되었습니다.");	
 			}
 		});
+		
+		// 글쓰기 페이지이동
+		function getWrite(){
+			$.ajax({
+				type: 'get',
+				success: function(){
+					var url = "/board/mybatis/write?paramData=true";
+					location.replace(url);
+				},
+				error: function(error){
+					console.error(error)
+				}				
+			})			
+		}
+		
 	</script>
 </body>
 </html>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.project.reteev.pagination.mapper.PaginationMapper">
+
+	<select id="pagingList" parameterType="com.project.reteev.model.Search" resultType="Board">
+		SELECT ROW_NUMBER()	OVER(ORDER BY id DESC) no, id, title, writer, content
+		FROM BOARD
+		<if test = "!search.equals('') and search!=null">
+		WHERE title LIKE CONCAT("%",#{search},"%")
+		   OR content LIKE CONCAT("%",#{search},"%")		
+		</if>
+		ORDER BY ID DESC
+		LIMIT #{start}, #{limit}
+	</select>
+
+	<select id="boardCount" parameterType="String" resultType="Integer">
+		SELECT COUNT(id)
+		FROM BOARD
+		<if test = "searchText!=null and !searchText.equals('')" >
+		WHERE title LIKE CONCAT("%",#{searchText},"%")
+		   OR content LIKE CONCAT("%",#{searchText},"%")		
+		ORDER BY ID DESC
+		</if>
+	</select>
+
+	<select id="search" parameterType="String" resultType="Board">
+		SELECT *
+		FROM BOARD
+		WHERE title LIKE CONCAT('%',#{searchText},'%')
+		   OR content LIKE CONCAT("%",#{searchText},"%")
+		ORDER BY id DESC
+	</select>
+</mapper>

@@ -5,7 +5,12 @@
 <mapper namespace="com.project.reteev.board.mapper.BoardMapper">
   
   <select id="getBoardList" resultType="Board">
-    SELECT * FROM BOARD
+	SELECT ROW_NUMBER()	OVER(ORDER BY id DESC) no, id, title, writer,content
+	FROM BOARD
+  </select>
+
+  <select id="countAll" resultType="Integer">
+	SELECT count(id)
   </select>
   
   <select id="getWriteElementById" resultType="String">

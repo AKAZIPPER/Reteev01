@@ -19,4 +19,6 @@ public interface BoardService {
 
 	// 게시판 삭제
 	void deleteBoard(Long id);
+
+	int countAll(String searchText);
 }

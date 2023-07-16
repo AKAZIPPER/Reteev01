@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="/fragments/header.html :: fragment-header">
+<meta charset="UTF-8">
+<title>회원가입 페이지</title>
+</head>
+<body>
+	<div class="container-fluid">
+		<div th:replace="/fragments/logoMain.html :: fragment-logoMain"></div>	
+		<h1 style="text-align:center" class="mt-5">RE:TEEV 회원님으로 모시겠습니다.</h1>
+		<form action="member/insertUser" method="post">
+			<table>
+				<tr class="inputValue">
+					<td>아이디<span style="color:red;"> (*필수) </span></td>
+					<td><input type="text" name="userId"></td>
+					<td>
+						<input type="button" value="중복확인">
+						<span></span>
+					</td>
+				</tr>
+				<tr class="inputValue">
+					<td>비밀번호<span style="color:red;"> (*필수) </span></td>
+					<td colspan="2"><input type="text" name="userPw"><span></span></td>
+				</tr>
+				<tr class="inputValue">
+					<td>비밀번호 확인</td>
+					<td colspan="2"><input type="text"><span></span></td>
+				</tr>
+				<tr class="inputValue">
+					<td>이메일</td>
+					<td colspan="2"><input type="text" name="userMail"></td>
+				</tr>
+				<tr class="inputValue">
+					<td>전화번호</td>
+					<td colspan="2"><input type="text" name="userTell"></td>
+				</tr>
+				<tr class="inputValue">
+					<td>주소</td>
+					<td colspan="2"><textarea name="userAddress"></textarea></td>
+				</tr>
+				<tr class="btns">
+					<td colspan="3" align="right">
+						<input type="button" value="돌아가기" onclick="back()">
+						<input type="submit" value="가입하기">
+					</td>
+				</tr>
+			</table>		
+		</form>
+	</div>
+	
+	<script>
+	
+		// 돌아가기
+		function back() {
+			location.replace("/");
+		}
+	</script>
+</body>
+</html>

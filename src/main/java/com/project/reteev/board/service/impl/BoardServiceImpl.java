@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.project.reteev.board.mapper.BoardMapper;
 import com.project.reteev.board.service.BoardService;
 import com.project.reteev.model.Board;
+import com.project.reteev.pagination.mapper.PaginationMapper;
 
 @Service
 @Transactional
@@ -16,6 +17,8 @@ public class BoardServiceImpl implements BoardService {
 	
 	@Autowired
 	private BoardMapper boardMapper;
+	@Autowired
+	private PaginationMapper paginationMapper;
 	
 	@Override
 	public List<Board> getBoardList(){
@@ -40,6 +43,20 @@ public class BoardServiceImpl implements BoardService {
 	@Override
 	public void deleteBoard(Long id) {
 		boardMapper.deleteBoard(id);
+	}
+	
+	@Override
+	public int countAll(String searchText) {
+		int result = 0;
+		if(searchText == null || searchText.equals("")) {
+			searchText = "";
+			System.out.println("searchText1 : >> " + searchText);
+			result = paginationMapper.boardCount(searchText);
+		}else {
+			System.out.println("searchText2 : >> " + searchText);
+			result = paginationMapper.boardCount(searchText);
+		}
+		return result;
 	}
 
 }
